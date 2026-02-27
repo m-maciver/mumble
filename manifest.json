@@ -1,8 +1,8 @@
 {
-  "name": "Mumble",
-  "short_name": "Mumble",
+  "name": "Ramble",
+  "short_name": "Ramble",
   "description": "Turn voice rambles into polished AI prompts",
-  "start_url": "/mumble/",
+  "start_url": "/ramble/",
   "display": "standalone",
   "background_color": "#0F0F13",
   "theme_color": "#7C3AED",

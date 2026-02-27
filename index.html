@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mumble — Turn Voice Rambles into Perfect AI Prompts</title>
-  <meta name="description" content="Speak or type your raw thought. Mumble turns it into a model-optimised prompt for Claude, ChatGPT, or Gemini. Free Chrome extension." />
-  <meta property="og:title" content="Mumble — Turn Voice Rambles into Perfect AI Prompts" />
-  <meta property="og:description" content="Speak or type your raw thought. Mumble turns it into a model-optimised prompt for Claude, ChatGPT, or Gemini." />
+  <title>Ramble — Turn Voice Rambles into Perfect AI Prompts</title>
+  <meta name="description" content="Speak or type your raw thought. Ramble turns it into a model-optimised prompt for Claude, ChatGPT, or Gemini. Free Chrome extension." />
+  <meta property="og:title" content="Ramble — Turn Voice Rambles into Perfect AI Prompts" />
+  <meta property="og:description" content="Speak or type your raw thought. Ramble turns it into a model-optimised prompt for Claude, ChatGPT, or Gemini." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://m-maciver.github.io/mumble/" />
+  <meta property="og:url" content="https://m-maciver.github.io/ramble/" />
   <!-- PWA -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Mumble">
+  <meta name="apple-mobile-web-app-title" content="Ramble">
   <meta name="theme-color" content="#7C3AED">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>" />
@@ -402,7 +402,7 @@
       margin-bottom: 3rem;
     }
 
-    /* ─── Try Mumble Now (Live Tool) ─── */
+    /* ─── Try Ramble Now (Live Tool) ─── */
     .try-now {
       background: var(--bg);
       border-top: 1px solid var(--border-subtle);
@@ -423,7 +423,7 @@
       margin-right: auto;
     }
 
-    .mumble-tool {
+    .ramble-tool {
       width: 100%;
       max-width: 480px;
       background: #1A1A24;
@@ -1092,7 +1092,7 @@
         align-items: flex-start;
       }
 
-      .mumble-tool {
+      .ramble-tool {
         border-radius: 12px;
       }
     }
@@ -1111,7 +1111,7 @@
 
   <!-- ─── Navbar ─── -->
   <nav class="nav">
-    <a class="nav-brand" href="#">Mumble <span>✨</span></a>
+    <a class="nav-brand" href="#">Ramble <span>✨</span></a>
     <a class="btn btn-primary" href="#try" onclick="event.preventDefault();document.getElementById('try').scrollIntoView({behavior:'smooth'})">Try it free</a>
   </nav>
 
@@ -1119,8 +1119,8 @@
   <section class="hero" id="hero">
     <div class="hero-content">
       <div class="pill-badge">✨ No install needed · Works in your browser</div>
-      <h1>Mumble your idea.<br><span class="purple">Get a perfect prompt.</span></h1>
-      <p class="hero-sub">Stop wrestling with AI prompts. Speak or type your raw thought — Mumble turns it into a model-optimised prompt for Claude, ChatGPT, or Gemini.</p>
+      <h1>Ramble your idea.<br><span class="purple">Get a perfect prompt.</span></h1>
+      <p class="hero-sub">Stop wrestling with AI prompts. Speak or type your raw thought — Ramble turns it into a model-optimised prompt for Claude, ChatGPT, or Gemini.</p>
       <div class="hero-cta-group">
         <a class="btn btn-primary btn-lg" href="#try" onclick="event.preventDefault();document.getElementById('try').scrollIntoView({behavior:'smooth'})">Try it free — no install needed</a>
         <span class="hero-note">No account needed. Works instantly.</span>
@@ -1132,7 +1132,7 @@
         <div class="mockup-glow"></div>
         <div class="mockup-popup">
           <div class="mockup-header">
-            <span class="mockup-header-brand">Mumble <span>✨</span></span>
+            <span class="mockup-header-brand">Ramble <span>✨</span></span>
             <span class="mockup-badge">Free · 2/3 today</span>
           </div>
           <div class="mockup-model-row">
@@ -1159,19 +1159,19 @@
     </div>
   </section>
 
-  <!-- ─── Try Mumble Now (Live Tool) ─── -->
+  <!-- ─── Try Ramble Now (Live Tool) ─── -->
   <section class="try-now" id="try">
     <div class="try-now-inner">
       <div class="section-label">Try it now</div>
-      <div class="section-title">Mumble right here — no install needed</div>
+      <div class="section-title">Ramble right here — no install needed</div>
       <p class="section-sub">The full experience, live in your browser. Bring your Anthropic API key and start refining prompts instantly.</p>
 
-      <div class="mumble-tool" id="mumbleTool">
+      <div class="ramble-tool" id="rambleTool">
 
         <!-- Key Setup State -->
         <div id="keySetup">
           <div class="tool-header">
-            <div class="tool-wordmark">Mumble <span>✨</span></div>
+            <div class="tool-wordmark">Ramble <span>✨</span></div>
           </div>
           <div class="tool-key-setup">
             <div class="tool-key-title">🔑 Enter your Anthropic API key</div>
@@ -1199,7 +1199,7 @@
         <!-- Tool Ready State -->
         <div id="toolReady" style="display:none;">
           <div class="tool-header">
-            <div class="tool-wordmark">Mumble <span>✨</span></div>
+            <div class="tool-wordmark">Ramble <span>✨</span></div>
             <button class="tool-change-key" onclick="changeKey()">✕ change key</button>
           </div>
           <div class="tool-ready" id="toolReadyBody" style="display:block;">
@@ -1253,7 +1253,7 @@
     <div class="how-inner">
       <div class="section-label">How it works</div>
       <div class="section-title">Three steps. Zero friction.</div>
-      <p class="section-sub">No prompt engineering PhD required. Just mumble and go.</p>
+      <p class="section-sub">No prompt engineering PhD required. Just ramble and go.</p>
       <div class="steps-grid">
         <div class="step-card">
           <div class="step-num">1</div>
@@ -1265,7 +1265,7 @@
           <div class="step-num">2</div>
           <span class="step-icon">✨</span>
           <div class="step-title">Hit Refine</div>
-          <p class="step-desc">Mumble detects your AI and formats the prompt specifically for Claude, ChatGPT, or Gemini. One click, instant magic.</p>
+          <p class="step-desc">Ramble detects your AI and formats the prompt specifically for Claude, ChatGPT, or Gemini. One click, instant magic.</p>
         </div>
         <div class="step-card">
           <div class="step-num">3</div>
@@ -1282,12 +1282,12 @@
     <div class="models-inner">
       <div class="section-label">Model-aware</div>
       <div class="section-title">Knows which AI you're using</div>
-      <p class="section-sub">Each model has its own quirks. Mumble formats your prompt specifically for the one you're on — so you always get the best response.</p>
+      <p class="section-sub">Each model has its own quirks. Ramble formats your prompt specifically for the one you're on — so you always get the best response.</p>
       <div class="models-grid">
         <div class="model-card model-card-gpt">
           <div class="model-badge badge-gpt">● ChatGPT</div>
           <div class="model-name">ChatGPT</div>
-          <p class="model-desc">Clear sequencing. Structured constraints. <em>"Return only X"</em> format. Mumble speaks GPT's language so you don't have to.</p>
+          <p class="model-desc">Clear sequencing. Structured constraints. <em>"Return only X"</em> format. Ramble speaks GPT's language so you don't have to.</p>
         </div>
         <div class="model-card model-card-claude">
           <div class="model-badge badge-claude">● Claude</div>
@@ -1379,18 +1379,18 @@
   <!-- ─── Footer ─── -->
   <footer>
     <div>
-      <div class="footer-brand">Mumble <span>✨</span></div>
-      <div class="footer-copy">© 2026 Mumble. All rights reserved.</div>
+      <div class="footer-brand">Ramble <span>✨</span></div>
+      <div class="footer-copy">© 2026 Ramble. All rights reserved.</div>
     </div>
     <nav class="footer-links">
       <a href="privacy.html">Privacy Policy</a>
-      <a href="https://chrome.google.com/webstore/search/mumble" target="_blank" rel="noopener">Chrome Web Store</a>
+      <a href="https://chrome.google.com/webstore/search/ramble" target="_blank" rel="noopener">Chrome Web Store</a>
     </nav>
   </footer>
 
   <script>
     // ─── State ───────────────────────────────────────────────────
-    const KEY_STORAGE = 'mumble_api_key';
+    const KEY_STORAGE = 'ramble_api_key';
     let recognition = null;
     let isRecording = false;
 
