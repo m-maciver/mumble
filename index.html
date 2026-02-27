@@ -1,39 +1,945 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Mumble — Turn voice rambles into polished AI prompts</title>
-<style>
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:#0F0F13;color:#fff;font-family:system-ui,-apple-system,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;}
-  .badge{background:#7C3AED22;border:1px solid #7C3AED66;color:#A78BFA;font-size:.75rem;padding:.3rem .8rem;border-radius:999px;margin-bottom:2rem;letter-spacing:.05em;}
-  h1{font-size:clamp(2rem,6vw,3.5rem);font-weight:800;text-align:center;line-height:1.1;margin-bottom:1rem;}
-  h1 span{color:#A78BFA;}
-  p.sub{color:#9CA3AF;font-size:1.1rem;text-align:center;max-width:480px;line-height:1.6;margin-bottom:2.5rem;}
-  .cta{background:#7C3AED;color:#fff;padding:.9rem 2.2rem;border-radius:8px;text-decoration:none;font-weight:600;font-size:1rem;transition:background .2s;}
-  .cta:hover{background:#6D28D9;}
-  .steps{margin-top:4rem;display:flex;gap:2rem;flex-wrap:wrap;justify-content:center;max-width:700px;}
-  .step{background:#1A1A24;border:1px solid #2D2D3D;border-radius:12px;padding:1.5rem;flex:1;min-width:180px;}
-  .step .num{color:#7C3AED;font-weight:800;font-size:1.2rem;margin-bottom:.5rem;}
-  .step p{color:#9CA3AF;font-size:.9rem;line-height:1.5;}
-  footer{margin-top:4rem;color:#4B5563;font-size:.8rem;text-align:center;}
-  footer a{color:#6B7280;text-decoration:none;}
-  footer a:hover{color:#A78BFA;}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mumble — Turn Voice Rambles into Perfect AI Prompts</title>
+  <meta name="description" content="Speak or type your raw thought. Mumble turns it into a model-optimised prompt for Claude, ChatGPT, or Gemini. Free Chrome extension." />
+  <meta property="og:title" content="Mumble — Turn Voice Rambles into Perfect AI Prompts" />
+  <meta property="og:description" content="Speak or type your raw thought. Mumble turns it into a model-optimised prompt for Claude, ChatGPT, or Gemini." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://m-maciver.github.io/mumble/" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0F0F13;
+      --surface: #1A1A24;
+      --surface-2: #21212E;
+      --accent: #7C3AED;
+      --accent-light: #A78BFA;
+      --accent-hover: #6D28D9;
+      --text-head: #F9FAFB;
+      --text-body: #9CA3AF;
+      --text-muted: #6B7280;
+      --border: rgba(124, 58, 237, 0.15);
+      --border-subtle: rgba(255,255,255,0.06);
+      --radius-card: 12px;
+      --radius-btn: 8px;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-body);
+      font-family: var(--font);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Scrollbar ─── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+    /* ─── Navbar ─── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(1.25rem, 5vw, 4rem);
+      height: 64px;
+      background: rgba(15, 15, 19, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-brand {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-head);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-brand span {
+      color: var(--accent-light);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1.1rem;
+      border-radius: var(--radius-btn);
+      font-family: var(--font);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-head);
+      border: 1px solid var(--border-subtle);
+    }
+    .btn-ghost:hover {
+      border-color: var(--accent-light);
+      color: var(--accent-light);
+    }
+
+    .btn-lg {
+      padding: 0.8rem 1.8rem;
+      font-size: 1rem;
+      border-radius: var(--radius-btn);
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      min-height: calc(100vh - 64px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 4rem;
+      padding: 4rem clamp(1.25rem, 5vw, 4rem);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      left: -200px;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.9rem;
+      background: rgba(124, 58, 237, 0.15);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent-light);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.02em;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--text-head);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 .purple {
+      color: var(--accent-light);
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--text-body);
+      max-width: 480px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+
+    .hero-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* ─── Mockup ─── */
+    .hero-mockup {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .mockup-wrap {
+      position: relative;
+    }
+
+    .mockup-glow {
+      position: absolute;
+      inset: -40px;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.25) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .mockup-popup {
+      width: 320px;
+      background: #1A1A24;
+      border-radius: 14px;
+      border: 1px solid rgba(124, 58, 237, 0.25);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .mockup-header {
+      background: #12121A;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .mockup-header-brand {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #F9FAFB;
+    }
+
+    .mockup-header-brand span { color: var(--accent-light); }
+
+    .mockup-badge {
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      background: rgba(124, 58, 237, 0.2);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      border-radius: 100px;
+      color: var(--accent-light);
+      font-weight: 600;
+    }
+
+    .mockup-model-row {
+      display: flex;
+      gap: 6px;
+      padding: 10px 16px 0;
+    }
+
+    .mockup-model-chip {
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 100px;
+      border: 1px solid;
+    }
+    .chip-gpt { color: #34D399; border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.1); }
+    .chip-claude { color: #FCD34D; border-color: rgba(252,211,77,0.3); background: rgba(252,211,77,0.1); }
+    .chip-gemini { color: #60A5FA; border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.1); }
+
+    .chip-active {
+      opacity: 1;
+    }
+    .chip-inactive {
+      opacity: 0.35;
+    }
+
+    .mockup-body {
+      padding: 12px 16px;
+    }
+
+    .mockup-textarea {
+      width: 100%;
+      background: #0F0F13;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: var(--text-body);
+      font-size: 0.78rem;
+      line-height: 1.5;
+      font-family: var(--font);
+      resize: none;
+      height: 72px;
+      margin-bottom: 10px;
+    }
+
+    .mockup-textarea::placeholder { color: #4B5563; }
+
+    .mockup-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .mockup-mic {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(124, 58, 237, 0.2);
+      border: 1px solid rgba(124, 58, 237, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .mockup-refine {
+      flex: 1;
+      padding: 8px 14px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: 0.01em;
+    }
+
+    .mockup-output {
+      margin: 0 16px 12px;
+      padding: 10px 12px;
+      background: rgba(124, 58, 237, 0.07);
+      border: 1px solid rgba(124, 58, 237, 0.15);
+      border-radius: 8px;
+      font-size: 0.72rem;
+      color: var(--text-body);
+      line-height: 1.5;
+    }
+
+    .mockup-output-label {
+      font-size: 0.62rem;
+      color: var(--accent-light);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .mockup-copy-row {
+      display: flex;
+      justify-content: flex-end;
+      padding: 0 16px 14px;
+    }
+
+    .mockup-copy-btn {
+      font-size: 0.72rem;
+      color: var(--accent-light);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ─── Sections ─── */
+    section {
+      padding: 6rem clamp(1.25rem, 5vw, 4rem);
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      color: var(--text-head);
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--text-body);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 3rem;
+    }
+
+    /* ─── How it works ─── */
+    .how {
+      background: var(--surface);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .how-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      position: relative;
+    }
+
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 2.5rem;
+      left: calc(16.6% + 2rem);
+      right: calc(16.6% + 2rem);
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 50%, var(--accent) 100%);
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    .step-card {
+      background: var(--bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-card);
+      padding: 2rem 1.5rem;
+      position: relative;
+      z-index: 1;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .step-card:hover {
+      border-color: rgba(124, 58, 237, 0.35);
+      transform: translateY(-3px);
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      background: rgba(124, 58, 237, 0.15);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--accent-light);
+      margin-bottom: 1rem;
+    }
+
+    .step-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .step-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-head);
+      margin-bottom: 0.5rem;
+    }
+
+    .step-desc {
+      font-size: 0.9rem;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    /* ─── Model-aware ─── */
+    .models-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .models-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .model-card {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-card);
+      padding: 1.75rem 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .model-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .model-card-gpt:hover { border-color: rgba(52,211,153,0.3); }
+    .model-card-claude:hover { border-color: rgba(252,211,77,0.3); }
+    .model-card-gemini:hover { border-color: rgba(96,165,250,0.3); }
+
+    .model-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      border: 1px solid;
+    }
+
+    .badge-gpt { color: #34D399; border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.1); }
+    .badge-claude { color: #FCD34D; border-color: rgba(252,211,77,0.3); background: rgba(252,211,77,0.1); }
+    .badge-gemini { color: #60A5FA; border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.1); }
+
+    .model-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-head);
+      margin-bottom: 0.6rem;
+    }
+
+    .model-desc {
+      font-size: 0.88rem;
+      color: var(--text-body);
+      line-height: 1.65;
+    }
+
+    /* ─── Pricing ─── */
+    .pricing {
+      background: var(--surface);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .pricing-inner {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .pricing-card {
+      background: var(--bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-card);
+      padding: 2rem 1.75rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pricing-card-featured {
+      border-color: rgba(124, 58, 237, 0.4);
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, var(--bg) 100%);
+    }
+
+    .pricing-card-dim {
+      opacity: 0.55;
+    }
+
+    .pricing-tier {
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      margin-bottom: 0.4rem;
+    }
+
+    .pricing-price {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-head);
+      letter-spacing: -0.03em;
+      margin-bottom: 0.25rem;
+    }
+
+    .pricing-cadence {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .pricing-list {
+      list-style: none;
+      margin-bottom: 1.75rem;
+      flex: 1;
+    }
+
+    .pricing-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.9rem;
+      color: var(--text-body);
+      padding: 0.35rem 0;
+    }
+
+    .pricing-list li::before {
+      content: '✓';
+      color: var(--accent-light);
+      font-weight: 800;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    .pricing-coming {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
+      border-radius: 100px;
+      padding: 0.25rem 0.75rem;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ─── Waitlist ─── */
+    .waitlist-inner {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .waitlist-inner .section-sub {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .waitlist-form {
+      display: flex;
+      gap: 0.75rem;
+      max-width: 440px;
+      margin: 0 auto 0.75rem;
+    }
+
+    .waitlist-input {
+      flex: 1;
+      padding: 0.7rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-btn);
+      color: var(--text-head);
+      font-family: var(--font);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .waitlist-input::placeholder { color: var(--text-muted); }
+    .waitlist-input:focus { border-color: rgba(124, 58, 237, 0.5); }
+
+    .waitlist-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* ─── Footer ─── */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 2rem clamp(1.25rem, 5vw, 4rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-brand {
+      font-weight: 700;
+      color: var(--text-head);
+      font-size: 1rem;
+    }
+
+    .footer-brand span { color: var(--accent-light); }
+
+    .footer-copy {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-links a {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover { color: var(--accent-light); }
+
+    /* ─── Mobile ─── */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding: 3rem 1.5rem;
+        gap: 3rem;
+      }
+
+      .steps-grid,
+      .models-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .steps-grid::before { display: none; }
+
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .mockup-popup {
+        width: 280px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2.1rem; }
+      .section-title { font-size: 1.6rem; }
+      .nav { padding: 0 1.25rem; }
+      section { padding: 4rem 1.25rem; }
+
+      .waitlist-form {
+        flex-direction: column;
+      }
+
+      footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="badge">Chrome Extension</div>
-  <h1>Mumble your idea.<br/><span>Get a perfect prompt.</span></h1>
-  <p class="sub">Stop struggling with AI prompts. Speak or type your raw thought — Mumble turns it into a structured, model-optimised prompt for Claude, ChatGPT, or Gemini.</p>
-  <a class="cta" href="https://chrome.google.com/webstore/search/mumble">Get Mumble for Chrome</a>
-  <div class="steps">
-    <div class="step"><div class="num">01</div><p>Hold the mic and speak — or just type your messy thought.</p></div>
-    <div class="step"><div class="num">02</div><p>Hit Refine. Mumble detects your AI and optimises the prompt for it.</p></div>
-    <div class="step"><div class="num">03</div><p>Copy and paste the polished prompt. Done.</p></div>
-  </div>
+
+  <!-- ─── Navbar ─── -->
+  <nav class="nav">
+    <a class="nav-brand" href="#">Mumble <span>✨</span></a>
+    <a class="btn btn-primary" href="https://chrome.google.com/webstore/search/mumble" target="_blank" rel="noopener">Add to Chrome</a>
+  </nav>
+
+  <!-- ─── Hero ─── -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <div class="pill-badge">🔌 Chrome Extension &middot; Free</div>
+      <h1>Mumble your idea.<br><span class="purple">Get a perfect prompt.</span></h1>
+      <p class="hero-sub">Stop wrestling with AI prompts. Speak or type your raw thought — Mumble turns it into a model-optimised prompt for Claude, ChatGPT, or Gemini.</p>
+      <div class="hero-cta-group">
+        <a class="btn btn-primary btn-lg" href="https://chrome.google.com/webstore/search/mumble" target="_blank" rel="noopener">Add to Chrome — it's free</a>
+        <span class="hero-note">No account needed. Works instantly.</span>
+      </div>
+    </div>
+
+    <div class="hero-mockup">
+      <div class="mockup-wrap">
+        <div class="mockup-glow"></div>
+        <div class="mockup-popup">
+          <div class="mockup-header">
+            <span class="mockup-header-brand">Mumble <span>✨</span></span>
+            <span class="mockup-badge">Free · 2/3 today</span>
+          </div>
+          <div class="mockup-model-row">
+            <span class="mockup-model-chip chip-gpt chip-inactive">ChatGPT</span>
+            <span class="mockup-model-chip chip-claude chip-active">Claude</span>
+            <span class="mockup-model-chip chip-gemini chip-inactive">Gemini</span>
+          </div>
+          <div class="mockup-body">
+            <textarea class="mockup-textarea" readonly placeholder="i want like a thing that like summarises my emails but only the important ones and like lets me reply fast..."></textarea>
+            <div class="mockup-actions">
+              <div class="mockup-mic">🎙️</div>
+              <div class="mockup-refine">Refine →</div>
+            </div>
+          </div>
+          <div class="mockup-output">
+            <div class="mockup-output-label">✨ Refined prompt</div>
+            Act as an executive assistant. Scan my inbox and surface only high-priority emails (replies needed, deadlines, or decisions). For each, show: sender, subject, 1-sentence summary, and suggested reply options. Prioritise by urgency.
+          </div>
+          <div class="mockup-copy-row">
+            <span class="mockup-copy-btn">📋 Copy to clipboard</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── How it works ─── -->
+  <section class="how" id="how">
+    <div class="how-inner">
+      <div class="section-label">How it works</div>
+      <div class="section-title">Three steps. Zero friction.</div>
+      <p class="section-sub">No prompt engineering PhD required. Just mumble and go.</p>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <span class="step-icon">🎙️</span>
+          <div class="step-title">Speak or type</div>
+          <p class="step-desc">Hold the mic and ramble, or type your messy thought. No structure needed. Seriously — the messier the better.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <span class="step-icon">✨</span>
+          <div class="step-title">Hit Refine</div>
+          <p class="step-desc">Mumble detects your AI and formats the prompt specifically for Claude, ChatGPT, or Gemini. One click, instant magic.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <span class="step-icon">📋</span>
+          <div class="step-title">Copy and paste</div>
+          <p class="step-desc">One click copies your polished prompt. Paste it into any AI. Done. Watch it actually work.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Model-aware ─── -->
+  <section id="models">
+    <div class="models-inner">
+      <div class="section-label">Model-aware</div>
+      <div class="section-title">Knows which AI you're using</div>
+      <p class="section-sub">Each model has its own quirks. Mumble formats your prompt specifically for the one you're on — so you always get the best response.</p>
+      <div class="models-grid">
+        <div class="model-card model-card-gpt">
+          <div class="model-badge badge-gpt">● ChatGPT</div>
+          <div class="model-name">ChatGPT</div>
+          <p class="model-desc">Clear sequencing. Structured constraints. <em>"Return only X"</em> format. Mumble speaks GPT's language so you don't have to.</p>
+        </div>
+        <div class="model-card model-card-claude">
+          <div class="model-badge badge-claude">● Claude</div>
+          <div class="model-name">Claude</div>
+          <p class="model-desc">WHY context upfront. Personality baked into the role. Positive format instructions that Claude actually follows well.</p>
+        </div>
+        <div class="model-card model-card-gemini">
+          <div class="model-badge badge-gemini">● Gemini</div>
+          <div class="model-name">Gemini</div>
+          <p class="model-desc">Role + expertise formula. Step-by-step guidance framing. Structured for Gemini's strengths in reasoning and analysis.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Pricing ─── -->
+  <section class="pricing" id="pricing">
+    <div class="pricing-inner">
+      <div class="section-label">Pricing</div>
+      <div class="section-title">Start free. Go unlimited when you're ready.</div>
+      <p class="section-sub">No credit card. No setup. Just install and start building better prompts today.</p>
+      <div class="pricing-grid">
+
+        <div class="pricing-card pricing-card-featured">
+          <div class="pricing-tier">Free</div>
+          <div class="pricing-price">$0</div>
+          <div class="pricing-cadence">Forever free · 3 prompts per day</div>
+          <ul class="pricing-list">
+            <li>Voice input</li>
+            <li>Text input</li>
+            <li>All 3 AI models</li>
+            <li>Copy to clipboard</li>
+          </ul>
+          <a class="btn btn-primary" href="https://chrome.google.com/webstore/search/mumble" target="_blank" rel="noopener">Start free</a>
+        </div>
+
+        <div class="pricing-card pricing-card-dim">
+          <div class="pricing-tier">Pro</div>
+          <div class="pricing-price">$?</div>
+          <div class="pricing-cadence">Unlimited prompts per day</div>
+          <span class="pricing-coming">Coming soon</span>
+          <ul class="pricing-list">
+            <li>Everything in Free</li>
+            <li>Unlimited daily prompts</li>
+            <li>Priority synthesis</li>
+            <li>Custom prompt templates</li>
+          </ul>
+          <div style="display:flex;gap:0.5rem;">
+            <input
+              type="email"
+              class="waitlist-input"
+              placeholder="you@example.com"
+              style="margin-bottom:0;"
+            />
+            <button class="btn btn-ghost" style="white-space:nowrap;flex-shrink:0;" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join waitlist</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Waitlist ─── -->
+  <section id="waitlist">
+    <div class="waitlist-inner">
+      <div class="section-label">Stay in the loop</div>
+      <div class="section-title">Get notified when Pro launches</div>
+      <p class="section-sub">Be first in line when unlimited prompts, priority synthesis, and custom templates go live.</p>
+
+      <!-- TODO: Replace REPLACE_WITH_FORM_ID with your Formspree form ID after signing up at formspree.io -->
+      <form
+        class="waitlist-form"
+        action="https://formspree.io/f/REPLACE_WITH_FORM_ID"
+        method="POST"
+      >
+        <input
+          type="email"
+          name="email"
+          class="waitlist-input"
+          placeholder="your@email.com"
+          required
+        />
+        <button type="submit" class="btn btn-primary">Notify me</button>
+      </form>
+      <p class="waitlist-note">No spam. Just a launch email.</p>
+    </div>
+  </section>
+
+  <!-- ─── Footer ─── -->
   <footer>
-    <p><a href="privacy.html">Privacy Policy</a> &nbsp;·&nbsp; &copy; 2026 Mumble</p>
+    <div>
+      <div class="footer-brand">Mumble <span>✨</span></div>
+      <div class="footer-copy">© 2026 Mumble. All rights reserved.</div>
+    </div>
+    <nav class="footer-links">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="https://chrome.google.com/webstore/search/mumble" target="_blank" rel="noopener">Chrome Web Store</a>
+    </nav>
   </footer>
+
 </body>
 </html>
