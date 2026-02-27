@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Mumble — Privacy Policy</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#0F0F13;color:#D1D5DB;font-family:system-ui,-apple-system,sans-serif;max-width:680px;margin:0 auto;padding:3rem 1.5rem;}
+  h1{color:#fff;font-size:1.8rem;margin-bottom:.5rem;}
+  .meta{color:#6B7280;font-size:.85rem;margin-bottom:2.5rem;}
+  h2{color:#fff;font-size:1.1rem;margin:2rem 0 .75rem;}
+  p,li{line-height:1.7;color:#9CA3AF;margin-bottom:.75rem;}
+  ul{padding-left:1.5rem;}
+  a{color:#A78BFA;}
+  strong{color:#E5E7EB;}
+</style>
+</head>
+<body>
+  <h1>Mumble — Privacy Policy</h1>
+  <p class="meta">Last updated: February 27, 2026</p>
+  <h2>What Mumble does</h2>
+  <p>Mumble is a Chrome extension that transforms voice recordings and typed text into structured AI prompts. When you click Refine, your input is sent to Anthropic's API and a polished prompt is returned.</p>
+  <h2>What data we collect</h2>
+  <p><strong>We do not collect or store any user data.</strong></p>
+  <p>Your voice recordings and typed text are processed locally in the extension and sent directly to Anthropic's API to generate your prompt. We do not log, store, or transmit your inputs to any server we operate. We do not store any personal information, usage analytics, or behavioural data.</p>
+  <h2>What leaves your device</h2>
+  <p>When you click Refine, your text input is sent to:</p>
+  <ul>
+    <li><strong>Anthropic API</strong> (api.anthropic.com) — to generate the refined prompt. <a href="https://www.anthropic.com/privacy">Anthropic's privacy policy</a> applies.</li>
+  </ul>
+  <p>No other data leaves your device.</p>
+  <h2>Chrome Storage</h2>
+  <p>Mumble uses chrome.storage.local to store which AI model tab you currently have open (ChatGPT, Claude, or Gemini) so the popup shows the correct badge colour. This data stays on your device and is never transmitted.</p>
+  <h2>Permissions</h2>
+  <ul>
+    <li><strong>activeTab</strong> — to detect which AI model you're currently using</li>
+    <li><strong>storage</strong> — to remember the current LLM tab locally</li>
+    <li><strong>clipboardWrite</strong> — to copy your refined prompt when you click Copy</li>
+    <li><strong>scripting</strong> — to inject the Mumble button on ChatGPT, Claude, and Gemini pages</li>
+  </ul>
+  <h2>Contact</h2>
+  <p>Questions? Open an issue on <a href="https://github.com/m-maciver/mumble">GitHub</a>.</p>
+</body>
+</html>
