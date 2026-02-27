@@ -1,5 +1,7 @@
 # Ramble
 
+![banner](banner.png)
+
 > Turn voice rambles and rough thoughts into polished AI prompts — instantly.
 
 [![Live PWA](https://img.shields.io/badge/PWA-getramble.xyz-blue)](https://getramble.xyz)
