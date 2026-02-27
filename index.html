@@ -8,13 +8,7 @@
   <meta property="og:title" content="Ramble — Turn Voice Rambles into Perfect AI Prompts" />
   <meta property="og:description" content="Speak or type your raw thought. Ramble turns it into a model-optimised prompt for Claude, ChatGPT, or Gemini." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://m-maciver.github.io/ramble/" />
-  <!-- PWA -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Ramble">
-  <meta name="theme-color" content="#7C3AED">
-  <link rel="manifest" href="manifest.json">
+  <meta property="og:url" content="https://getramble.xyz/" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>" />
   <style>
     *, *::before, *::after {
@@ -124,6 +118,19 @@
       padding: 0.8rem 1.8rem;
       font-size: 1rem;
       border-radius: var(--radius-btn);
+    }
+
+    /* ─── Coming Soon badge ─── */
+    .badge-soon {
+      display: inline-block;
+      padding: 3px 10px;
+      border: 1px solid rgba(124,58,237,0.4);
+      border-radius: 20px;
+      font-size: 11px;
+      color: #A78BFA;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
     }
 
     /* ─── Hero ─── */
@@ -400,345 +407,6 @@
       max-width: 520px;
       line-height: 1.7;
       margin-bottom: 3rem;
-    }
-
-    /* ─── Try Ramble Now (Live Tool) ─── */
-    .try-now {
-      background: var(--bg);
-      border-top: 1px solid var(--border-subtle);
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .try-now-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .try-now-inner .section-sub {
-      text-align: center;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .ramble-tool {
-      width: 100%;
-      max-width: 480px;
-      background: #1A1A24;
-      border: 1px solid rgba(124, 58, 237, 0.25);
-      border-radius: 16px;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04);
-      overflow: hidden;
-    }
-
-    /* Tool header */
-    .tool-header {
-      background: #12121A;
-      padding: 14px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .tool-wordmark {
-      font-weight: 800;
-      font-size: 1rem;
-      color: var(--text-head);
-      letter-spacing: -0.01em;
-    }
-
-    .tool-wordmark span { color: var(--accent-light); }
-
-    .tool-change-key {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-family: var(--font);
-      padding: 0;
-      transition: color 0.15s;
-    }
-    .tool-change-key:hover { color: var(--accent-light); }
-
-    /* API Key setup state */
-    .tool-key-setup {
-      padding: 24px 20px;
-    }
-
-    .tool-key-title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--text-head);
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .tool-key-row {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .tool-key-input {
-      flex: 1;
-      padding: 0.65rem 0.9rem;
-      background: #0F0F13;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: var(--radius-btn);
-      color: var(--text-head);
-      font-family: var(--font);
-      font-size: 0.85rem;
-      outline: none;
-      transition: border-color 0.2s;
-      min-width: 0;
-    }
-    .tool-key-input::placeholder { color: #4B5563; }
-    .tool-key-input:focus { border-color: rgba(124, 58, 237, 0.5); }
-
-    .tool-key-save {
-      padding: 0.65rem 1rem;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius-btn);
-      font-family: var(--font);
-      font-size: 0.85rem;
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.15s;
-      flex-shrink: 0;
-    }
-    .tool-key-save:hover { background: var(--accent-hover); }
-
-    .tool-key-privacy {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.4rem;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin-bottom: 0.6rem;
-      line-height: 1.4;
-    }
-
-    .tool-key-privacy .lock-icon {
-      font-size: 0.85rem;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .tool-key-getkey {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .tool-key-getkey a {
-      color: var(--accent-light);
-      text-decoration: none;
-    }
-    .tool-key-getkey a:hover { text-decoration: underline; }
-
-    /* Tool ready state */
-    .tool-ready {
-      padding: 16px 18px 20px;
-      display: none;
-    }
-
-    .tool-textarea {
-      width: 100%;
-      background: #0F0F13;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 10px;
-      padding: 12px 14px;
-      color: var(--text-head);
-      font-size: 0.9rem;
-      line-height: 1.6;
-      font-family: var(--font);
-      resize: vertical;
-      min-height: 100px;
-      margin-bottom: 12px;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .tool-textarea::placeholder { color: #4B5563; }
-    .tool-textarea:focus { border-color: rgba(124, 58, 237, 0.4); }
-
-    .tool-actions {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .tool-mic-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: rgba(124, 58, 237, 0.15);
-      border: 1px solid rgba(124, 58, 237, 0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: all 0.15s;
-      position: relative;
-      user-select: none;
-    }
-    .tool-mic-btn:hover {
-      background: rgba(124, 58, 237, 0.25);
-    }
-    .tool-mic-btn.recording {
-      background: rgba(239, 68, 68, 0.2);
-      border-color: rgba(239, 68, 68, 0.6);
-    }
-    .tool-mic-btn.recording::before {
-      content: '';
-      position: absolute;
-      inset: -4px;
-      border-radius: 50%;
-      border: 2px solid rgba(239, 68, 68, 0.6);
-      animation: pulse-ring 1.2s ease-out infinite;
-    }
-    @keyframes pulse-ring {
-      0% { transform: scale(1); opacity: 1; }
-      100% { transform: scale(1.4); opacity: 0; }
-    }
-
-    .tool-refine-btn {
-      flex: 1;
-      padding: 0 1rem;
-      height: 44px;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      font-family: var(--font);
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.15s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-    .tool-refine-btn:hover:not(:disabled) {
-      background: var(--accent-hover);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 16px rgba(124, 58, 237, 0.4);
-    }
-    .tool-refine-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    /* Spinner */
-    .spinner {
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      display: none;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* Output section */
-    .tool-output {
-      display: none;
-      margin-top: 4px;
-      background: rgba(124, 58, 237, 0.07);
-      border: 1px solid rgba(124, 58, 237, 0.2);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .tool-output-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 14px;
-      border-bottom: 1px solid rgba(124, 58, 237, 0.12);
-    }
-
-    .tool-output-label {
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent-light);
-    }
-
-    .tool-copy-btn {
-      font-size: 0.78rem;
-      color: var(--accent-light);
-      font-weight: 600;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: var(--font);
-      padding: 0;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: opacity 0.15s;
-    }
-    .tool-copy-btn:hover { opacity: 0.8; }
-
-    .tool-output-text {
-      padding: 12px 14px;
-      font-size: 0.88rem;
-      color: var(--text-head);
-      line-height: 1.65;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    .tool-reset-btn {
-      width: 100%;
-      padding: 10px;
-      background: none;
-      border: none;
-      border-top: 1px solid rgba(124, 58, 237, 0.12);
-      color: var(--text-muted);
-      font-family: var(--font);
-      font-size: 0.82rem;
-      cursor: pointer;
-      transition: color 0.15s;
-    }
-    .tool-reset-btn:hover { color: var(--accent-light); }
-
-    /* Error */
-    .tool-error {
-      display: none;
-      padding: 10px 14px;
-      background: rgba(239, 68, 68, 0.1);
-      border: 1px solid rgba(239, 68, 68, 0.25);
-      border-radius: 8px;
-      font-size: 0.82rem;
-      color: #FCA5A5;
-      margin-top: 8px;
-      line-height: 1.5;
-    }
-
-    /* Voice note */
-    .tool-voice-note {
-      margin-top: 14px;
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      line-height: 1.5;
-      text-align: center;
     }
 
     /* ─── How it works ─── */
@@ -1041,6 +709,7 @@
     .footer-links {
       display: flex;
       gap: 1.5rem;
+      align-items: center;
     }
 
     .footer-links a {
@@ -1051,6 +720,13 @@
     }
 
     .footer-links a:hover { color: var(--accent-light); }
+
+    .footer-link-disabled {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      opacity: 0.5;
+      cursor: default;
+    }
 
     /* ─── Mobile ─── */
     @media (max-width: 900px) {
@@ -1091,19 +767,6 @@
         flex-direction: column;
         align-items: flex-start;
       }
-
-      .ramble-tool {
-        border-radius: 12px;
-      }
-    }
-
-    @media (max-width: 375px) {
-      .tool-key-row {
-        flex-direction: column;
-      }
-      .tool-key-save {
-        width: 100%;
-      }
     }
   </style>
 </head>
@@ -1112,18 +775,19 @@
   <!-- ─── Navbar ─── -->
   <nav class="nav">
     <a class="nav-brand" href="#">Ramble <span>✨</span></a>
-    <a class="btn btn-primary" href="#try" onclick="event.preventDefault();document.getElementById('try').scrollIntoView({behavior:'smooth'})">Try it free</a>
+    <a class="btn btn-primary" href="#waitlist" onclick="event.preventDefault();document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Get Early Access</a>
   </nav>
 
   <!-- ─── Hero ─── -->
   <section class="hero" id="hero">
     <div class="hero-content">
-      <div class="pill-badge">✨ No install needed · Works in your browser</div>
+      <div class="pill-badge">✨ Chrome extension · Claude, ChatGPT &amp; Gemini</div>
+      <span class="badge-soon">Coming soon</span>
       <h1>Ramble your idea.<br><span class="purple">Get a perfect prompt.</span></h1>
       <p class="hero-sub">Stop wrestling with AI prompts. Speak or type your raw thought — Ramble turns it into a model-optimised prompt for Claude, ChatGPT, or Gemini.</p>
       <div class="hero-cta-group">
-        <a class="btn btn-primary btn-lg" href="#try" onclick="event.preventDefault();document.getElementById('try').scrollIntoView({behavior:'smooth'})">Try it free — no install needed</a>
-        <span class="hero-note">No account needed. Works instantly.</span>
+        <a class="btn btn-primary btn-lg" href="#waitlist" onclick="event.preventDefault();document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Get Early Access</a>
+        <span class="hero-note">Join the waitlist. Be first when it drops.</span>
       </div>
     </div>
 
@@ -1155,95 +819,6 @@
             <span class="mockup-copy-btn">📋 Copy to clipboard</span>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Try Ramble Now (Live Tool) ─── -->
-  <section class="try-now" id="try">
-    <div class="try-now-inner">
-      <div class="section-label">Try it now</div>
-      <div class="section-title">Ramble right here — no install needed</div>
-      <p class="section-sub">The full experience, live in your browser. Bring your Anthropic API key and start refining prompts instantly.</p>
-
-      <div class="ramble-tool" id="rambleTool">
-
-        <!-- Key Setup State -->
-        <div id="keySetup">
-          <div class="tool-header">
-            <div class="tool-wordmark">Ramble <span>✨</span></div>
-          </div>
-          <div class="tool-key-setup">
-            <div class="tool-key-title">🔑 Enter your Anthropic API key</div>
-            <div class="tool-key-row">
-              <input
-                type="password"
-                id="keyInput"
-                class="tool-key-input"
-                placeholder="sk-ant-..."
-                autocomplete="off"
-                spellcheck="false"
-              />
-              <button class="tool-key-save" onclick="saveKey()">Save key</button>
-            </div>
-            <div class="tool-key-privacy">
-              <span class="lock-icon">🔒</span>
-              <span>Your key is stored in your browser only. It is never transmitted to any server except Anthropic directly.</span>
-            </div>
-            <div class="tool-key-getkey">
-              Don't have a key? <a href="https://console.anthropic.com" target="_blank" rel="noopener">Get one at console.anthropic.com →</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tool Ready State -->
-        <div id="toolReady" style="display:none;">
-          <div class="tool-header">
-            <div class="tool-wordmark">Ramble <span>✨</span></div>
-            <button class="tool-change-key" onclick="changeKey()">✕ change key</button>
-          </div>
-          <div class="tool-ready" id="toolReadyBody" style="display:block;">
-            <textarea
-              id="promptInput"
-              class="tool-textarea"
-              placeholder="Type your thought or hold the mic to speak…"
-            ></textarea>
-            <div class="tool-actions">
-              <button
-                class="tool-mic-btn"
-                id="micBtn"
-                title="Hold to record"
-                onmousedown="startRecording()"
-                onmouseup="stopRecording()"
-                onmouseleave="stopRecording()"
-                ontouchstart="startRecording(event)"
-                ontouchend="stopRecording()"
-              >🎙️</button>
-              <button class="tool-refine-btn" id="refineBtn" onclick="refinePrompt()">
-                <div class="spinner" id="spinner"></div>
-                <span id="refineBtnText">Refine →</span>
-              </button>
-            </div>
-
-            <div class="tool-error" id="toolError"></div>
-
-            <div class="tool-output" id="toolOutput">
-              <div class="tool-output-header">
-                <span class="tool-output-label">✨ Refined Prompt</span>
-                <button class="tool-copy-btn" onclick="copyOutput()">
-                  <span id="copyBtnText">📋 Copy</span>
-                </button>
-              </div>
-              <div class="tool-output-text" id="outputText"></div>
-              <button class="tool-reset-btn" onclick="resetTool()">↩ Refine again</button>
-            </div>
-
-            <div class="tool-voice-note">
-              Voice recognition works in Chrome and Edge. For best results on mobile, use Chrome for Android.
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   </section>
@@ -1308,7 +883,7 @@
     <div class="pricing-inner">
       <div class="section-label">Pricing</div>
       <div class="section-title">Start free. Go unlimited when you're ready.</div>
-      <p class="section-sub">No credit card. No setup. Just install and start building better prompts today.</p>
+      <p class="section-sub">No credit card. No setup. Just install and start building better prompts.</p>
       <div class="pricing-grid">
 
         <div class="pricing-card pricing-card-featured">
@@ -1321,7 +896,7 @@
             <li>All 3 AI models</li>
             <li>Copy to clipboard</li>
           </ul>
-          <a class="btn btn-primary" href="#try" onclick="event.preventDefault();document.getElementById('try').scrollIntoView({behavior:'smooth'})">Try it free</a>
+          <a class="btn btn-primary" href="#waitlist" onclick="event.preventDefault();document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join the waitlist</a>
         </div>
 
         <div class="pricing-card pricing-card-dim">
@@ -1353,14 +928,14 @@
   <!-- ─── Waitlist ─── -->
   <section id="waitlist">
     <div class="waitlist-inner">
-      <div class="section-label">Stay in the loop</div>
-      <div class="section-title">Get notified when Pro launches</div>
-      <p class="section-sub">Be first in line when unlimited prompts, priority synthesis, and custom templates go live.</p>
+      <div class="section-label">Early access</div>
+      <div class="section-title">Be first to know when it drops</div>
+      <p class="section-sub">Ramble is almost ready. Drop your email and you'll be the first through the door.</p>
 
-      <!-- TODO: Replace REPLACE_WITH_FORM_ID with your Formspree form ID after signing up at formspree.io -->
+      <!-- TODO: replace ACTION with Formspree form ID -->
       <form
         class="waitlist-form"
-        action="https://formspree.io/f/REPLACE_WITH_FORM_ID"
+        action="https://formspree.io/f/YOUR_FORM_ID"
         method="POST"
       >
         <input
@@ -1384,248 +959,9 @@
     </div>
     <nav class="footer-links">
       <a href="privacy.html">Privacy Policy</a>
-      <a href="https://chrome.google.com/webstore/search/ramble" target="_blank" rel="noopener">Chrome Web Store</a>
+      <span class="footer-link-disabled">Chrome Web Store — arriving soon</span>
     </nav>
   </footer>
 
-  <script>
-    // ─── State ───────────────────────────────────────────────────
-    const KEY_STORAGE = 'ramble_api_key';
-    let recognition = null;
-    let isRecording = false;
-
-    // ─── Init ─────────────────────────────────────────────────────
-    function init() {
-      const storedKey = localStorage.getItem(KEY_STORAGE);
-      if (storedKey) {
-        showToolReady();
-      } else {
-        showKeySetup();
-      }
-      // Allow Enter key to save API key
-      document.getElementById('keyInput').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') saveKey();
-      });
-    }
-
-    function showKeySetup() {
-      document.getElementById('keySetup').style.display = 'block';
-      document.getElementById('toolReady').style.display = 'none';
-    }
-
-    function showToolReady() {
-      document.getElementById('keySetup').style.display = 'none';
-      document.getElementById('toolReady').style.display = 'block';
-    }
-
-    // ─── Key management ──────────────────────────────────────────
-    function saveKey() {
-      const val = document.getElementById('keyInput').value.trim();
-      if (!val.startsWith('sk-ant-')) {
-        showKeyError('Please enter a valid Anthropic API key (starts with sk-ant-)');
-        return;
-      }
-      localStorage.setItem(KEY_STORAGE, val);
-      document.getElementById('keyInput').value = '';
-      showToolReady();
-    }
-
-    function changeKey() {
-      localStorage.removeItem(KEY_STORAGE);
-      resetTool();
-      showKeySetup();
-      setTimeout(() => document.getElementById('keyInput').focus(), 50);
-    }
-
-    function showKeyError(msg) {
-      const input = document.getElementById('keyInput');
-      input.style.borderColor = 'rgba(239,68,68,0.6)';
-      setTimeout(() => input.style.borderColor = '', 1800);
-    }
-
-    // ─── Voice recording ─────────────────────────────────────────
-    function startRecording(e) {
-      if (e && e.cancelable) e.preventDefault();
-      if (isRecording) return;
-
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        showError('Voice recognition is not supported in this browser. Try Chrome or Edge.');
-        return;
-      }
-
-      recognition = new SpeechRecognition();
-      recognition.continuous = false;
-      recognition.interimResults = true;
-      recognition.lang = 'en-US';
-
-      let interimText = '';
-      const textarea = document.getElementById('promptInput');
-      const baseText = textarea.value;
-
-      recognition.onresult = function(event) {
-        interimText = '';
-        let finalText = '';
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          if (event.results[i].isFinal) {
-            finalText += event.results[i][0].transcript;
-          } else {
-            interimText += event.results[i][0].transcript;
-          }
-        }
-        textarea.value = baseText + (baseText && (finalText || interimText) ? ' ' : '') + finalText + interimText;
-      };
-
-      recognition.onerror = function(event) {
-        if (event.error !== 'aborted') {
-          showError('Voice error: ' + event.error + '. Make sure you\'ve allowed microphone access.');
-        }
-        stopRecordingCleanup();
-      };
-
-      recognition.onend = function() {
-        stopRecordingCleanup();
-      };
-
-      recognition.start();
-      isRecording = true;
-      document.getElementById('micBtn').classList.add('recording');
-    }
-
-    function stopRecording() {
-      if (!isRecording) return;
-      if (recognition) {
-        try { recognition.stop(); } catch(e) {}
-      }
-    }
-
-    function stopRecordingCleanup() {
-      isRecording = false;
-      document.getElementById('micBtn').classList.remove('recording');
-      recognition = null;
-    }
-
-    // ─── Refine ──────────────────────────────────────────────────
-    async function refinePrompt() {
-      const rawText = document.getElementById('promptInput').value.trim();
-      if (!rawText) {
-        showError('Please type or speak your thought first.');
-        return;
-      }
-
-      const apiKey = localStorage.getItem(KEY_STORAGE);
-      if (!apiKey) {
-        changeKey();
-        return;
-      }
-
-      setLoading(true);
-      hideError();
-      document.getElementById('toolOutput').style.display = 'none';
-
-      try {
-        const response = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': apiKey,
-            'anthropic-version': '2023-06-01',
-            'anthropic-dangerous-direct-browser-access': 'true'
-          },
-          body: JSON.stringify({
-            model: 'claude-haiku-4-5',
-            max_tokens: 1024,
-            messages: [{ role: 'user', content: rawText }],
-            system: 'You are an expert prompt engineer. Transform the user\'s raw thought into a clear, structured, effective AI prompt. Return only the refined prompt, no explanation.'
-          })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          const errMsg = data?.error?.message || 'API request failed (status ' + response.status + ')';
-          if (response.status === 401) {
-            showError('Invalid API key. ' + errMsg + ' — Click "✕ change key" to update it.');
-          } else if (response.status === 429) {
-            showError('Rate limit reached. Please wait a moment and try again.');
-          } else {
-            showError('Error: ' + errMsg);
-          }
-          return;
-        }
-
-        const refined = data.content[0].text;
-        document.getElementById('outputText').textContent = refined;
-        document.getElementById('toolOutput').style.display = 'block';
-        document.getElementById('copyBtnText').textContent = '📋 Copy';
-
-      } catch (err) {
-        if (err.name === 'TypeError' && err.message.includes('fetch')) {
-          showError('Network error. Check your connection and try again.');
-        } else {
-          showError('Something went wrong: ' + err.message);
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    // ─── Copy ─────────────────────────────────────────────────────
-    async function copyOutput() {
-      const text = document.getElementById('outputText').textContent;
-      try {
-        await navigator.clipboard.writeText(text);
-        document.getElementById('copyBtnText').textContent = '✓ Copied!';
-        setTimeout(() => {
-          document.getElementById('copyBtnText').textContent = '📋 Copy';
-        }, 2000);
-      } catch (err) {
-        // Fallback for older browsers
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        document.getElementById('copyBtnText').textContent = '✓ Copied!';
-        setTimeout(() => {
-          document.getElementById('copyBtnText').textContent = '📋 Copy';
-        }, 2000);
-      }
-    }
-
-    // ─── Reset ────────────────────────────────────────────────────
-    function resetTool() {
-      document.getElementById('promptInput').value = '';
-      document.getElementById('toolOutput').style.display = 'none';
-      hideError();
-      document.getElementById('promptInput').focus();
-    }
-
-    // ─── Helpers ─────────────────────────────────────────────────
-    function setLoading(loading) {
-      const btn = document.getElementById('refineBtn');
-      const spinner = document.getElementById('spinner');
-      const text = document.getElementById('refineBtnText');
-      btn.disabled = loading;
-      spinner.style.display = loading ? 'block' : 'none';
-      text.textContent = loading ? 'Refining…' : 'Refine →';
-    }
-
-    function showError(msg) {
-      const el = document.getElementById('toolError');
-      el.textContent = msg;
-      el.style.display = 'block';
-    }
-
-    function hideError() {
-      document.getElementById('toolError').style.display = 'none';
-    }
-
-    // ─── Boot ─────────────────────────────────────────────────────
-    document.addEventListener('DOMContentLoaded', init);
-  </script>
 </body>
 </html>
