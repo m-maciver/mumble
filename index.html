@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ramble — Turn Voice Rambles into Perfect AI Prompts</title>
-  <meta name="description" content="Speak or type your raw thought. Ramble turns it into a model-optimised prompt for Claude, ChatGPT, or Gemini. Free Chrome extension." />
-  <meta property="og:title" content="Ramble — Turn Voice Rambles into Perfect AI Prompts" />
-  <meta property="og:description" content="Speak or type your raw thought. Ramble turns it into a model-optimised prompt for Claude, ChatGPT, or Gemini." />
+  <meta name="description" content="Speak or type your raw thought. Ramble turns it into a perfect prompt for Claude, ChatGPT, or Gemini." />
+  <meta property="og:title" content="Ramble — Perfect AI prompts from raw thoughts." />
+  <meta property="og:description" content="Speak or type. Ramble does the rest." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://getramble.xyz/" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>" />
@@ -14,25 +14,24 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:           #0F0F13;
-      --surface:      #1A1A24;
-      --surface-2:    #12121A;
-      --border:       #2D2D3D;
-      --border-hi:    rgba(124,58,237,0.35);
-      --accent:       #7C3AED;
-      --accent-hi:    #6D28D9;
-      --accent-light: #A78BFA;
-      --text-head:    #F9FAFB;
-      --text-body:    #9CA3AF;
-      --text-muted:   #6B7280;
-      --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --bg:        #0C0C10;
+      --surface:   #13131A;
+      --surface-2: #0F0F15;
+      --border:    #252532;
+      --accent:    #7C3AED;
+      --accent-hi: #6D28D9;
+      --glow:      rgba(124,58,237,0.22);
+      --light:     #A78BFA;
+      --head:      #F4F4F8;
+      --body:      #9CA3AF;
+      --muted:     #5B5F6E;
+      --font: system-ui, -apple-system, 'Segoe UI', sans-serif;
     }
 
-    html, body { height: 100%; }
-
+    html { scroll-behavior: smooth; }
     body {
       background: var(--bg);
-      color: var(--text-body);
+      color: var(--body);
       font-family: var(--font);
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
@@ -41,261 +40,153 @@
       overflow-x: hidden;
     }
 
-    /* ── Background grid + glow ── */
+    /* ── Grid + glow ── */
     body::before {
       content: '';
-      position: fixed; inset: 0;
+      position: fixed; inset: 0; z-index: 0;
       background-image:
-        linear-gradient(rgba(124,58,237,0.055) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(124,58,237,0.055) 1px, transparent 1px);
+        linear-gradient(rgba(124,58,237,0.048) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,58,237,0.048) 1px, transparent 1px);
       background-size: 44px 44px;
       pointer-events: none;
-      z-index: 0;
     }
     body::after {
       content: '';
-      position: fixed; inset: 0;
+      position: fixed; inset: 0; z-index: 0;
       background:
-        radial-gradient(ellipse 55% 70% at 70% 40%, rgba(124,58,237,0.13) 0%, transparent 65%),
-        radial-gradient(ellipse 35% 45% at 15% 75%, rgba(91,33,182,0.08) 0%, transparent 60%);
+        radial-gradient(ellipse 80% 70% at 50% 30%, rgba(124,58,237,0.14) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(91,33,182,0.07) 0%, transparent 60%);
       pointer-events: none;
-      z-index: 0;
     }
 
     /* ── Nav ── */
     nav {
-      position: relative;
-      z-index: 10;
-      padding: 1.25rem clamp(1.5rem, 5vw, 5rem);
+      position: relative; z-index: 10;
+      padding: 1.4rem 2rem;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
+      justify-content: center;
     }
-
     .nav-brand {
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 700;
-      color: var(--text-head);
+      color: var(--head);
       letter-spacing: -0.01em;
-      text-decoration: none;
     }
-
-    .nav-badge {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--accent-light);
-      background: rgba(124,58,237,0.12);
-      border: 1px solid rgba(124,58,237,0.28);
-      border-radius: 100px;
-      padding: 3px 12px;
-      letter-spacing: 0.04em;
-    }
+    .nav-brand span { color: var(--light); }
 
     /* ── Hero ── */
     .hero {
-      position: relative;
-      z-index: 1;
+      position: relative; z-index: 1;
       flex: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      gap: 3rem;
-      padding: 4rem clamp(1.5rem, 5vw, 5rem) 5rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    /* ── Left copy ── */
-    .hero-copy {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .eyebrow {
-      display: inline-flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.4rem;
-    }
-    .eyebrow::before {
-      content: '';
-      display: block;
-      width: 20px; height: 2px;
-      background: var(--accent);
-      border-radius: 2px;
-    }
-
-    h1 {
-      font-size: clamp(2.2rem, 4.5vw, 3.4rem);
-      font-weight: 800;
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-      color: var(--text-head);
-      margin-bottom: 1.2rem;
-    }
-
-    h1 em {
-      font-style: normal;
-      background: linear-gradient(135deg, #A78BFA 0%, #7C3AED 60%, #5B21B6 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-sub {
-      font-size: 1rem;
-      line-height: 1.7;
-      color: var(--text-body);
-      max-width: 420px;
-      margin-bottom: 2.25rem;
-    }
-
-    /* ── Form ── */
-    .form-row {
-      display: flex;
-      gap: 0.5rem;
-      width: 100%;
-      max-width: 400px;
-      margin-bottom: 0.7rem;
-    }
-
-    .form-input {
-      flex: 1;
-      min-width: 0;
-      padding: 0.7rem 1rem;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text-head);
-      font-family: var(--font);
-      font-size: 0.88rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .form-input::placeholder { color: var(--text-muted); }
-    .form-input:focus { border-color: var(--border-hi); }
-
-    .form-btn {
-      padding: 0.7rem 1.25rem;
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hi) 100%);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-family: var(--font);
-      font-size: 0.88rem;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: opacity 0.15s, transform 0.15s, box-shadow 0.15s;
-    }
-    .form-btn:hover {
-      opacity: 0.92;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 18px rgba(124,58,237,0.4);
-    }
-
-    .form-note {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    /* ── Mockup ── */
-    .hero-mockup {
-      display: flex;
       justify-content: center;
-      align-items: center;
-      position: relative;
+      padding: 1rem 1.5rem 4rem;
+      gap: 0;
     }
 
-    .mockup-glow {
+    /* ── Popup ── */
+    .popup-stage {
+      position: relative;
+      margin-bottom: 3.5rem;
+    }
+
+    /* Outer glow ring */
+    .popup-glow {
       position: absolute;
-      inset: -60px;
-      background: radial-gradient(circle, rgba(124,58,237,0.2) 0%, transparent 70%);
+      inset: -80px;
+      background: radial-gradient(circle, rgba(124,58,237,0.28) 0%, transparent 68%);
       border-radius: 50%;
       pointer-events: none;
+      filter: blur(10px);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-8px); }
     }
 
     .popup {
-      width: 340px;
+      width: 380px;
       background: var(--surface);
-      border-radius: 13px;
+      border-radius: 16px;
       border: 1px solid var(--border);
       box-shadow:
-        0 40px 100px rgba(0,0,0,0.7),
-        0 0 0 1px rgba(255,255,255,0.03),
-        0 0 60px rgba(124,58,237,0.12);
+        0 60px 130px rgba(0,0,0,0.75),
+        0 0 0 1px rgba(255,255,255,0.035),
+        0 0 80px rgba(124,58,237,0.15);
       overflow: hidden;
       position: relative;
       z-index: 2;
-      color: var(--text-head);
+      animation: float 5s ease-in-out infinite;
     }
 
     .popup-header {
-      padding: 13px 16px;
+      padding: 14px 18px;
       border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
       background: var(--surface-2);
     }
-    .popup-title { font-weight: 700; font-size: 14px; }
-    .popup-gear { color: var(--text-muted); font-size: 15px; cursor: pointer; }
+    .popup-title { font-size: 14.5px; font-weight: 700; color: var(--head); }
+    .popup-gear { color: var(--muted); font-size: 15px; }
 
-    .popup-model-row {
-      display: flex;
-      gap: 5px;
-      padding: 9px 16px 0;
+    .model-row {
+      display: flex; gap: 6px;
+      padding: 10px 18px 0;
     }
     .chip {
-      font-size: 0.63rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 100px;
-      border: 1px solid;
-      letter-spacing: 0.02em;
+      font-size: 0.62rem; font-weight: 700;
+      padding: 3px 9px; border-radius: 100px; border: 1px solid;
+      letter-spacing: 0.04em;
     }
-    .chip-gpt    { color: #34D399; border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.1); opacity:0.4; }
-    .chip-claude { color: #FCD34D; border-color: rgba(252,211,77,0.3); background: rgba(252,211,77,0.1); }
-    .chip-gemini { color: #60A5FA; border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.1); opacity:0.4; }
+    .chip-gpt    { color: #34D399; border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.08); opacity:.35; }
+    .chip-claude { color: #FCD34D; border-color: rgba(252,211,77,0.35); background: rgba(252,211,77,0.08); }
+    .chip-gemini { color: #60A5FA; border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.08); opacity:.35; }
 
-    .popup-body {
-      padding: 10px 16px 12px;
-    }
+    .popup-body { padding: 11px 18px 14px; }
 
+    .textarea-wrap { position: relative; margin-bottom: 10px; }
     .fake-textarea {
       width: 100%;
-      background: #0F0F13;
+      background: #090910;
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 9px 44px 9px 11px;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      line-height: 1.55;
+      border-radius: 9px;
+      padding: 10px 46px 10px 13px;
+      font-size: 0.73rem;
+      color: var(--muted);
+      line-height: 1.6;
       font-family: var(--font);
-      min-height: 72px;
-      position: relative;
+      min-height: 76px;
     }
-    .textarea-wrap {
-      position: relative;
-      margin-bottom: 9px;
+
+    @keyframes pulse-ring {
+      0%   { transform: scale(1);   opacity: 1; }
+      70%  { transform: scale(1.8); opacity: 0; }
+      100% { transform: scale(1.8); opacity: 0; }
     }
+    @keyframes mic-glow {
+      0%, 100% { box-shadow: 0 2px 12px rgba(124,58,237,0.5); }
+      50%       { box-shadow: 0 2px 20px rgba(124,58,237,0.85), 0 0 30px rgba(124,58,237,0.25); }
+    }
+
     .mic-btn {
-      position: absolute;
-      top: 9px; right: 9px;
+      position: absolute; top: 10px; right: 10px;
       width: 30px; height: 30px;
-      background: var(--accent);
+      background: linear-gradient(135deg, var(--accent), var(--accent-hi));
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       font-size: 13px;
-      box-shadow: 0 2px 10px rgba(124,58,237,0.45);
+      animation: mic-glow 2.2s ease-in-out infinite;
+      cursor: pointer;
+    }
+    .mic-btn::after {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: 50%;
+      border: 2px solid rgba(124,58,237,0.6);
+      animation: pulse-ring 2.2s ease-out infinite;
     }
 
     .refine-btn {
@@ -305,136 +196,160 @@
       border: none;
       border-radius: 9px;
       padding: 10px;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 700;
+      letter-spacing: 0.01em;
       cursor: pointer;
       font-family: var(--font);
-      letter-spacing: 0.01em;
     }
 
     .popup-output {
-      margin: 0 16px 13px;
-      padding: 11px 12px;
-      background: #0F0F13;
+      margin: 0 18px 14px;
+      padding: 12px 13px;
+      background: #090910;
       border: 1px solid rgba(124,58,237,0.22);
-      border-radius: 8px;
+      border-radius: 9px;
       font-size: 0.72rem;
-      color: var(--text-body);
-      line-height: 1.6;
+      color: var(--body);
+      line-height: 1.65;
       font-family: var(--font);
+      position: relative;
     }
     .output-label {
-      font-size: 0.62rem;
-      font-weight: 700;
-      color: var(--accent-light);
-      letter-spacing: 0.07em;
+      font-size: 0.6rem; font-weight: 700;
+      color: var(--light);
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
+      display: flex; align-items: center; gap: 5px;
     }
-    .popup-footer-strip {
-      padding: 9px 16px 13px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .output-label::before {
+      content: '';
+      display: block; width: 14px; height: 1.5px;
+      background: var(--light);
+      border-radius: 2px;
+    }
+
+    .popup-footer {
+      padding: 10px 18px 14px;
+      display: flex; align-items: center; justify-content: space-between;
       border-top: 1px solid var(--border);
     }
-    .status-dot {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 0.65rem;
-      color: var(--text-muted);
+    .status {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.65rem; color: var(--muted);
     }
     .dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
+      width: 7px; height: 7px; border-radius: 50%;
       background: #34D399;
-      box-shadow: 0 0 5px rgba(52,211,153,0.6);
+      box-shadow: 0 0 6px rgba(52,211,153,0.7);
+      animation: dot-pulse 2s ease-in-out infinite;
+    }
+    @keyframes dot-pulse {
+      0%,100% { box-shadow: 0 0 6px rgba(52,211,153,0.7); }
+      50%      { box-shadow: 0 0 12px rgba(52,211,153,1); }
     }
     .copy-btn {
-      background: rgba(124,58,237,0.15);
+      background: rgba(124,58,237,0.14);
       border: 1px solid rgba(124,58,237,0.3);
-      color: var(--accent-light);
+      color: var(--light);
       border-radius: 7px;
-      padding: 5px 11px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: var(--font);
+      padding: 5px 12px;
+      font-size: 0.7rem; font-weight: 600;
+      cursor: pointer; font-family: var(--font);
+      transition: background 0.15s;
+    }
+    .copy-btn:hover { background: rgba(124,58,237,0.25); }
+
+    /* ── Headline ── */
+    .headline {
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--head);
+      margin-bottom: 0.7rem;
+    }
+    h1 em {
+      font-style: normal;
+      background: linear-gradient(130deg, #C4B5FD 0%, #A78BFA 40%, #7C3AED 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .sub {
+      font-size: 0.95rem;
+      color: var(--body);
+      letter-spacing: 0.01em;
     }
 
-    /* ── Feature pills ── */
-    .features {
-      position: relative;
-      z-index: 1;
+    /* ── Form ── */
+    .form-wrap {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.75rem;
-      padding: 0 clamp(1.5rem, 5vw, 5rem) 3.5rem;
-      flex-wrap: wrap;
+      gap: 0.55rem;
+      width: 100%;
+      max-width: 380px;
+      margin-bottom: 0.65rem;
     }
-
-    .feat {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(255,255,255,0.03);
+    .form-input {
+      flex: 1; min-width: 0;
+      padding: 0.72rem 1rem;
+      background: rgba(255,255,255,0.04);
       border: 1px solid var(--border);
-      border-radius: 100px;
-      padding: 0.4rem 1rem;
-      font-size: 0.8rem;
-      color: var(--text-body);
+      border-radius: 9px;
+      color: var(--head);
+      font-family: var(--font);
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.2s;
     }
+    .form-input::placeholder { color: var(--muted); }
+    .form-input:focus { border-color: rgba(124,58,237,0.5); }
 
-    .feat-icon {
-      width: 20px; height: 20px;
-      background: rgba(124,58,237,0.15);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.65rem;
+    .form-btn {
+      padding: 0.72rem 1.3rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hi));
+      color: #fff;
+      border: none; border-radius: 9px;
+      font-family: var(--font);
+      font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; white-space: nowrap;
+      transition: opacity 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .form-btn:hover {
+      opacity: 0.9; transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(124,58,237,0.45);
+    }
+    .form-note {
+      font-size: 0.74rem; color: var(--muted);
+      text-align: center;
     }
 
     /* ── Footer ── */
     footer {
-      position: relative;
-      z-index: 1;
-      border-top: 1px solid rgba(255,255,255,0.04);
-      padding: 1.25rem clamp(1.5rem, 5vw, 5rem);
-      display: flex;
-      align-items: center;
+      position: relative; z-index: 1;
+      padding: 1.25rem 2rem;
+      border-top: 1px solid rgba(255,255,255,0.035);
+      display: flex; align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.75rem;
+      flex-wrap: wrap; gap: 0.75rem;
     }
     footer span, footer a {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.15s;
+      font-size: 0.78rem; color: var(--muted);
+      text-decoration: none; transition: color 0.15s;
     }
-    footer a:hover { color: var(--accent-light); }
+    footer a:hover { color: var(--light); }
+    .footer-right { display: flex; gap: 1.25rem; }
 
     /* ── Mobile ── */
-    @media (max-width: 860px) {
-      .hero {
-        grid-template-columns: 1fr;
-        text-align: center;
-        padding: 3rem 1.5rem 3.5rem;
-        gap: 3rem;
-      }
-      .hero-copy { align-items: center; }
-      .hero-sub { margin-left: auto; margin-right: auto; }
-      .form-row { max-width: 100%; }
-      .eyebrow { margin-left: auto; margin-right: auto; }
-      .hero-mockup { order: -1; }
-      .popup { width: 300px; }
-    }
-
     @media (max-width: 480px) {
-      .form-row { flex-direction: column; }
-      h1 { font-size: 2rem; }
-      .features { gap: 0.5rem; }
+      .popup { width: 310px; }
+      .form-wrap { flex-direction: column; max-width: 100%; }
+      h1 { font-size: 1.85rem; }
     }
   </style>
 </head>
@@ -442,48 +357,23 @@
 
   <!-- Nav -->
   <nav>
-    <a class="nav-brand" href="#">Ramble ✨</a>
-    <span class="nav-badge">Coming soon</span>
+    <span class="nav-brand">Ramble <span>✨</span></span>
   </nav>
 
   <!-- Hero -->
   <section class="hero">
 
-    <!-- Left: copy + form -->
-    <div class="hero-copy">
-      <div class="eyebrow">Chrome Extension</div>
-
-      <h1>Your thoughts,<br><em>perfectly prompted.</em></h1>
-
-      <p class="hero-sub">Speak or type your raw idea. Ramble synthesises it into a model-optimised prompt for Claude, ChatGPT, or Gemini — in seconds.</p>
-
-      <form
-        class="form-row"
-        action="https://formspree.io/f/YOUR_FORM_ID"
-        method="POST"
-      >
-        <input
-          type="email"
-          name="email"
-          class="form-input"
-          placeholder="your@email.com"
-          required
-        />
-        <button type="submit" class="form-btn">Get early access</button>
-      </form>
-      <p class="form-note">No spam. One email when it launches.</p>
-    </div>
-
-    <!-- Right: popup mockup -->
-    <div class="hero-mockup">
-      <div class="mockup-glow"></div>
+    <!-- Popup — the star -->
+    <div class="popup-stage">
+      <div class="popup-glow"></div>
       <div class="popup">
+
         <div class="popup-header">
           <div class="popup-title">Ramble ✨</div>
           <div class="popup-gear">⚙</div>
         </div>
 
-        <div class="popup-model-row">
+        <div class="model-row">
           <span class="chip chip-gpt">ChatGPT</span>
           <span class="chip chip-claude">Claude</span>
           <span class="chip chip-gemini">Gemini</span>
@@ -491,48 +381,56 @@
 
         <div class="popup-body">
           <div class="textarea-wrap">
-            <div class="fake-textarea">okay so I need a blog post about why most AI prompts are terrible and what to do instead…</div>
+            <div class="fake-textarea">okay so I need to explain why most AI prompts are terrible and what to actually do instead, like a blog post or something…</div>
             <div class="mic-btn">🎤</div>
           </div>
           <button class="refine-btn">Refine →</button>
         </div>
 
         <div class="popup-output">
-          <div class="output-label">✨ Refined prompt</div>
-          You are an expert content strategist. Write an 800-word blog post on why most AI prompts fail to produce quality output. Structure: opening hook → 3 root causes with examples → actionable framework. Tone: direct, slightly irreverent. Return the full article.
+          <div class="output-label">Refined prompt</div>
+          You are an expert content strategist. Write an 800-word blog post on why most AI prompts produce mediocre output — and what to do instead. Structure: opening hook → 3 root causes with examples → an actionable framework readers can apply immediately. Tone: direct, slightly irreverent. Return the full article.
         </div>
 
-        <div class="popup-footer-strip">
-          <div class="status-dot"><div class="dot"></div> Claude · Ready</div>
-          <button class="copy-btn">📋 Copy prompt</button>
+        <div class="popup-footer">
+          <div class="status"><div class="dot"></div>Claude · Ready</div>
+          <button class="copy-btn">Copy prompt</button>
         </div>
+
       </div>
     </div>
 
-  </section>
+    <!-- Headline -->
+    <div class="headline">
+      <h1>Raw thought.<br><em>Perfect prompt.</em></h1>
+      <p class="sub">Speak or type your idea. Ramble does the rest.</p>
+    </div>
 
-  <!-- Feature pills -->
-  <div class="features">
-    <div class="feat">
-      <div class="feat-icon">🎤</div>
-      Speak or type your raw idea
-    </div>
-    <div class="feat">
-      <div class="feat-icon">✨</div>
-      AI refines it instantly
-    </div>
-    <div class="feat">
-      <div class="feat-icon">📋</div>
-      Copy and paste — done
-    </div>
-  </div>
+    <!-- Form -->
+    <form
+      class="form-wrap"
+      action="https://formspree.io/f/YOUR_FORM_ID"
+      method="POST"
+    >
+      <input
+        type="email"
+        name="email"
+        class="form-input"
+        placeholder="your@email.com"
+        required
+      />
+      <button type="submit" class="form-btn">Get early access</button>
+    </form>
+    <p class="form-note">No spam. One email when it launches.</p>
+
+  </section>
 
   <!-- Footer -->
   <footer>
     <span>© 2026 Ramble</span>
-    <div style="display:flex;gap:1.25rem">
-      <a href="privacy.html">Privacy Policy</a>
-      <span>Chrome Web Store — arriving soon</span>
+    <div class="footer-right">
+      <a href="privacy.html">Privacy</a>
+      <span>Chrome extension — arriving soon</span>
     </div>
   </footer>
 
