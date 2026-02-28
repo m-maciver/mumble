@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ramble</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="popup-wrapper">
+
+    <!-- ── Header ─────────────────────────────────────────── -->
+    <header class="popup-header">
+      <div class="wordmark">
+        Ramble
+        <span class="spark">✨</span>
+      </div>
+      <button class="gear-btn" title="Settings (coming soon)" aria-label="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- ── Voice unavailable notice ──────────────────────── -->
+    <div class="voice-unavailable" id="voiceUnavailable" role="alert">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      Voice not available — type instead
+    </div>
+
+    <!-- ── Input section ─────────────────────────────────── -->
+    <section class="input-section" aria-label="Prompt input">
+      <div class="textarea-row">
+        <textarea
+          id="promptInput"
+          placeholder="Type a thought or hold the mic to speak…"
+          aria-label="Your raw prompt"
+          rows="5"
+          spellcheck="true"
+        ></textarea>
+        <button
+          class="mic-btn"
+          id="micBtn"
+          title="Hold to record"
+          aria-label="Hold to record voice input"
+          aria-pressed="false"
+        >
+          <!-- Mic icon (default) -->
+          <svg id="micIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="2" width="6" height="12" rx="3"/>
+            <path d="M5 10a7 7 0 0 0 14 0"/>
+            <line x1="12" y1="19" x2="12" y2="22"/>
+            <line x1="9" y1="22" x2="15" y2="22"/>
+          </svg>
+          <!-- Stop/square icon (recording) -->
+          <svg id="stopIcon" viewBox="0 0 24 24" fill="currentColor" style="display:none">
+            <rect x="7" y="7" width="10" height="10" rx="2"/>
+          </svg>
+        </button>
+      </div>
+      <div class="input-label" id="inputLabel">
+        <span class="rec-dot"></span>
+        <span id="inputLabelText">Speak your mind, then refine it.</span>
+        <span class="llm-badge" id="llmBadge">other</span>
+      </div>
+    </section>
+
+    <!-- ── Refine button ──────────────────────────────────── -->
+    <button id="refineBtn" aria-label="Refine prompt">
+      <span class="btn-spinner" aria-hidden="true"></span>
+      <span class="btn-label">Refine →</span>
+    </button>
+
+    <!-- ── Output section ────────────────────────────────── -->
+    <section class="output-section" id="outputSection" aria-live="polite" aria-label="Refined prompt output">
+      <div class="output-header">
+        <span class="output-title">Refined Prompt</span>
+        <button class="copy-btn" id="copyBtn" aria-label="Copy refined prompt to clipboard">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+          Copy
+        </button>
+      </div>
+      <div class="output-body">
+        <pre id="refinedOutput" aria-label="Refined prompt text"></pre>
+      </div>
+    </section>
+
+    <!-- ── Explanation line ───────────────────────────────── -->
+    <p id="explanationLine" aria-live="polite"></p>
+
+    <!-- ── Refine again ───────────────────────────────────── -->
+    <button id="refineAgainBtn" aria-label="Clear output and refine again">
+      ↩ Refine again
+    </button>
+
+  </div><!-- /.popup-wrapper -->
+
+  <script src="synthesizer.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

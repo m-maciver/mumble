@@ -1,0 +1,557 @@
+/* ============================================================
+   Ramble Extension — popup.css
+   Design: Silicon Valley minimal, dark mode, purple accent
+   Pixel design pass — polished & premium
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg:          #0F0F13;
+  --surface:     #1A1A24;
+  --surface-hi:  #22223A;
+  --accent:      #7C3AED;
+  --accent-dark: #6D28D9;
+  --accent-deep: #5B21B6;
+  --accent-glow: rgba(124, 58, 237, 0.15);
+  --accent-glow-hover: rgba(124, 58, 237, 0.4);
+  --text:        #F0F0F5;
+  --text-muted:  #6B6B7E;
+  --text-dim:    #4B4B60;
+  --text-ghost:  #3A3A50;
+  --border:      #2A2A3A;
+  --border-muted:#232334;
+  --danger:      #DC2626;
+  --danger-glow: rgba(220, 38, 38, 0.7);
+  --radius-card: 12px;
+  --radius-btn:  10px;
+  --transition:  0.15s ease;
+  --font:        system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif;
+  --mono:        ui-monospace, "SF Mono", "Cascadia Code", "Fira Code", monospace;
+}
+
+html, body {
+  width: 380px;
+  min-height: 200px;
+  max-height: 560px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-muted); }
+
+/* ── Layout wrapper ─────────────────────────────────────── */
+.popup-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  width: 380px;
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+.popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* gap handled by popup-wrapper */
+}
+
+.wordmark {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  user-select: none;
+}
+
+.wordmark .spark {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.gear-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 5px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition), background var(--transition);
+  opacity: 0.65;
+}
+
+.gear-btn:hover {
+  color: var(--text);
+  background: var(--surface);
+  opacity: 1;
+}
+
+.gear-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* ── Voice unavailable notice ───────────────────────────── */
+.voice-unavailable {
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: none;
+  align-items: center;
+  gap: 6px;
+}
+
+.voice-unavailable.visible {
+  display: flex;
+}
+
+/* ── Input section ──────────────────────────────────────── */
+.input-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 12px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.input-section:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.textarea-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+#promptInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 108px;
+  resize: none;
+  caret-color: var(--accent);
+  width: 100%;
+  padding: 0;
+}
+
+#promptInput::placeholder {
+  color: var(--text-ghost);
+}
+
+/* Interim (live) speech transcript shown in grey */
+#promptInput.is-interim {
+  color: var(--text-muted);
+}
+
+/* ── Mic button ─────────────────────────────────────────── */
+.mic-btn {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  background: var(--surface);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: all var(--transition);
+  position: relative;
+}
+
+.mic-btn:hover {
+  border-color: #9B5CF6;
+  background: var(--surface-hi);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+
+.mic-btn:active {
+  transform: scale(0.94);
+}
+
+.mic-btn svg {
+  width: 17px;
+  height: 17px;
+  pointer-events: none;
+}
+
+/* Recording state */
+.mic-btn.recording {
+  border-color: transparent;
+  color: #fff;
+  background: var(--danger);
+  animation: mic-glow-pulse 1.2s ease-in-out infinite;
+}
+
+.mic-btn.recording:hover {
+  background: #EF4444;
+  box-shadow: none;
+}
+
+@keyframes mic-glow-pulse {
+  0%   { box-shadow: 0 0 0 0 var(--danger-glow); }
+  70%  { box-shadow: 0 0 0 12px rgba(220, 38, 38, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+}
+
+/* Hidden */
+.mic-btn.hidden {
+  display: none;
+}
+
+/* ── Input label row ────────────────────────────────────── */
+.input-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+}
+
+.input-label .rec-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #EF4444;
+  flex-shrink: 0;
+  display: none;
+}
+
+.input-label.recording .rec-dot {
+  display: block;
+  animation: dot-blink 1s step-start infinite;
+}
+
+@keyframes dot-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── LLM badge ──────────────────────────────────────────── */
+.llm-badge {
+  font-size: 10px;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--text-ghost);
+  border-radius: 20px;
+  padding: 2px 8px;
+  margin-left: auto;
+  text-transform: lowercase;
+  letter-spacing: 0.3px;
+  font-weight: 500;
+  transition: color var(--transition), border-color var(--transition), background var(--transition);
+}
+
+/* Color-coded LLM badges */
+.llm-badge[data-llm="chatgpt"] {
+  color: #10B981;
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.06);
+}
+
+.llm-badge[data-llm="claude"] {
+  color: #F59E0B;
+  border-color: rgba(245, 158, 11, 0.3);
+  background: rgba(245, 158, 11, 0.06);
+}
+
+.llm-badge[data-llm="gemini"] {
+  color: #3B82F6;
+  border-color: rgba(59, 130, 246, 0.3);
+  background: rgba(59, 130, 246, 0.06);
+}
+
+/* ── Refine button ──────────────────────────────────────── */
+#refineBtn {
+  width: 100%;
+  height: 46px;
+  border: none;
+  border-radius: var(--radius-btn);
+  background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all var(--transition);
+  box-shadow: 0 2px 12px rgba(124, 58, 237, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+#refineBtn .btn-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#refineBtn .btn-arrow {
+  display: inline-block;
+  transition: transform var(--transition);
+}
+
+#refineBtn:hover:not(:disabled) .btn-arrow {
+  transform: translateX(3px);
+}
+
+#refineBtn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+  transform: translateY(-1px);
+}
+
+#refineBtn:active:not(:disabled) {
+  transform: scale(0.98);
+  box-shadow: 0 1px 8px rgba(124, 58, 237, 0.2);
+}
+
+#refineBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Spinner inside button */
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+  display: none;
+}
+
+#refineBtn.loading .btn-spinner {
+  display: block;
+}
+
+#refineBtn.loading .btn-label {
+  opacity: 0.85;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Output section ─────────────────────────────────────── */
+.output-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  display: none;
+}
+
+.output-section.visible {
+  display: block;
+  animation: slideIn 0.2s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading shimmer */
+.output-section.loading {
+  display: block;
+}
+
+.output-section.loading .output-body {
+  position: relative;
+  overflow: hidden;
+  min-height: 80px;
+}
+
+.output-section.loading .output-body::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(124, 58, 237, 0.06) 40%,
+    rgba(124, 58, 237, 0.12) 50%,
+    rgba(124, 58, 237, 0.06) 60%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px 0 12px;
+}
+
+.output-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+}
+
+/* ── Copy button — pill shape ───────────────────────────── */
+.copy-btn {
+  font-size: 11px;
+  font-family: var(--font);
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--surface-hi);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.copy-btn:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  background: var(--accent-glow);
+}
+
+.copy-btn.copied {
+  color: #34D399;
+  border-color: rgba(52, 211, 153, 0.4);
+  background: rgba(52, 211, 153, 0.08);
+}
+
+.copy-btn.flash-green {
+  color: #34D399;
+  border-color: rgba(52, 211, 153, 0.5);
+  background: rgba(52, 211, 153, 0.12);
+}
+
+.output-body {
+  padding: 10px 12px 12px 12px;
+}
+
+#refinedOutput {
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text);
+  background: #0A0A10;
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-height: 40px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin: 0;
+}
+
+/* Error state */
+#refinedOutput.error {
+  color: #F87171;
+  font-family: var(--font);
+  font-style: italic;
+}
+
+/* ── Explanation line ───────────────────────────────────── */
+#explanationLine {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-style: italic;
+  text-align: center;
+  min-height: 16px;
+  display: none;
+  animation: slideIn 0.2s ease-out;
+}
+
+#explanationLine.visible {
+  display: block;
+}
+
+/* ── Refine again button ────────────────────────────────── */
+#refineAgainBtn {
+  display: none;
+  width: 100%;
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+#refineAgainBtn.visible {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+#refineAgainBtn:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  background: var(--accent-glow);
+}
